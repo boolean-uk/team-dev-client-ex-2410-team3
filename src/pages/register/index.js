@@ -40,6 +40,7 @@ const Register = () => {
               name="email"
               label={'Email *'}
               isRequired={true}
+              validChars={'A-Za-z0-9@._-'}
             />
             <TextInput
               value={formData.password}
