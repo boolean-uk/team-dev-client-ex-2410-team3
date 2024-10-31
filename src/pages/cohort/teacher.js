@@ -2,14 +2,25 @@ import Card from '../../components/card';
 import CreateCohortModal from '../../components/createCohortModal';
 import useModal from '../../hooks/useModal';
 
-const TeacherView = ({ cohort, handleCohortChange, selectedCohort, students, teachers }) => {
+const TeacherView = ({
+  cohort,
+  handleCohortChange,
+  selectedCohort,
+  students,
+  teachers,
+  currentUserId,
+  fetchCohorts
+}) => {
   // Use the useModal hook to get the openModal and setModal functions
   const { openModal, setModal } = useModal();
 
   // Create a function to run on user interaction
   const showModal = () => {
     // Use setModal to set the header of the modal and the component the modal should render
-    setModal('Create a Cohort', <CreateCohortModal />); // CreatePostModal is just a standard React component, nothing special
+    setModal(
+      'Create a Cohort',
+      <CreateCohortModal userId={currentUserId} fetchCohorts={fetchCohorts} />
+    ); // CreatePostModal is just a standard React component, nothing special
 
     // Open the modal!
     openModal();

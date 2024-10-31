@@ -1,25 +1,33 @@
 import useModal from '../../hooks/useModal';
 import { useState } from 'react';
 import Button from '../button';
+import { postCohort, addUserToCohort } from '../../service/apiClient';
 
-const CreateCohortModal = () => {
+const CreateCohortModal = ({ userId, fetchCohorts }) => {
   const { closeModal } = useModal();
-  const [title, setTitle] = useState('');
+  const [name, setName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
   const onChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'title') setTitle(value);
-    if (name === 'startDate') setStartDate(value);
-    if (name === 'endDate') setEndDate(value);
+    const { value } = e.target;
+    if (e.target.name === 'name') setName(value);
+    if (e.target.name === 'startDate') setStartDate(value);
+    if (e.target.name === 'endDate') setEndDate(value);
   };
 
   const onSubmit = () => {
     console.log('Submit button was clicked! Closing modal in 2 seconds...');
-    console.log(title);
+    console.log(name);
     console.log(startDate);
     console.log(endDate);
+    postCohort(name, startDate, endDate).then((res) => {
+      console.log(res);
+      addUserToCohort(res.data.id, userId).then((res) => {
+        console.log(res);
+        fetchCohorts();
+      });
+    });
     setTimeout(() => {
       closeModal();
     }, 2000);
@@ -30,13 +38,7 @@ const CreateCohortModal = () => {
   return (
     <div>
       <section>
-        <input
-          type="text"
-          name="title"
-          value={title}
-          onChange={onChange}
-          placeholder="Cohort Title"
-        />
+        <input type="text" name="name" value={name} onChange={onChange} placeholder="Cohort Name" />
       </section>
       <section>
         <input
@@ -63,8 +65,8 @@ const CreateCohortModal = () => {
         <Button
           onClick={onSubmit}
           text="Create Cohort"
-          classes={`${title.length ? 'blue' : 'offwhite'} width-full`}
-          disabled={!title.length}
+          classes={`${name.length ? 'blue' : 'offwhite'} width-full`}
+          disabled={!name.length}
         />
       </section>
     </div>
