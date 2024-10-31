@@ -40,19 +40,9 @@ async function getUserData(userId) {
   return res.data.user;
 }
 
-async function getUserData(userId) {
-  const res = await get(`users/${userId}`);
-  return res.data.user;
-}
-
 async function getPosts() {
   const res = await get('posts');
   return res.data.posts;
-}
-
-async function getUserData(userId) {
-  const res = await get(`users/${userId}`);
-  return res.data.user;
 }
 
 async function getCohorts() {

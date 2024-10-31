@@ -82,14 +82,14 @@ const UserProfile = ({ isEditMode }) => {
 
     try {
       await onUpdateProfile(
-        profileId,
         firstName,
         lastName,
         bio,
         username,
         githubUsername,
         profilePicture,
-        mobile
+        mobile,
+        profileId
       );
 
       setRoolbackProfile(profile);
