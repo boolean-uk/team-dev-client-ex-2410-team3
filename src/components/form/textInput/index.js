@@ -37,7 +37,7 @@ const TextInput = ({
         }
       }
     }
-  }, [isRequired, value]);
+  }, [isRequired]);
 
   const validateInput = (value, event) => {
     const regex = new RegExp(`^[${validChars}]+$`);
