@@ -34,7 +34,7 @@ const ContactInfoForm = () => {
             <TextInput
               name="password"
               label="Password*"
-              value={profile.password}
+              value={profile.password ? profile.password : 'mockpassword'}
               onChange={handleInputChange}
               type="password"
               isRequired={true}
