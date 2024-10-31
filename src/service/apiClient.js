@@ -14,6 +14,10 @@ async function register(email, password) {
   return await login(email, password);
 }
 
+async function postMessage(content) {
+  await post(`posts`, { content });
+}
+
 async function updateProfile(
   userId,
   firstName,
@@ -107,5 +111,6 @@ export {
   postCohort,
   addUserToCohort,
   getUserData,
-  getUsers
+  getUsers,
+  postMessage
 };
