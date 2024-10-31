@@ -59,6 +59,15 @@ async function getCohorts() {
   return res.data.cohorts;
 }
 
+async function postCohort(name, startDate, endDate) {
+  return await post('cohorts', { name, startDate, endDate });
+}
+
+async function addUserToCohort(cohortId, userId) {
+  console.log(cohortId + ' user: ' + userId);
+  return await post(`cohorts/addUser`, { cohortId, userId });
+}
+
 async function post(endpoint, data, auth = true) {
   return await request('POST', endpoint, data, auth);
 }
@@ -93,4 +102,15 @@ async function request(method, endpoint, data, auth = true) {
   return response.json();
 }
 
-export { login, getPosts, register, updateProfile, getCohorts, getUserData, getUsers, postMessage };
+export {
+  login,
+  getPosts,
+  register,
+  updateProfile,
+  getCohorts,
+  postCohort,
+  addUserToCohort,
+  getUserData,
+  getUsers,
+  postMessage
+};

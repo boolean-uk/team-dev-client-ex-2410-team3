@@ -20,7 +20,8 @@ const TextInput = ({
   patternDescription = null,
   minLength = 0,
   maxLength = 50,
-  isLocked = false
+  isLocked = false,
+  showPasswordToggle = true
 }) => {
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
@@ -80,15 +81,17 @@ const TextInput = ({
         <label htmlFor={name}>{label}</label>
         <input type={type} name={name} value={value} readOnly={true} />
         {showpassword && <input type="text" name={name} value={value} className="passwordreveal" />}
-        <button
-          className={`showpasswordbutton-duo formbutton ${showpassword === true && '__faded'}`}
-          onClick={(e) => {
-            e.preventDefault();
-            setShowpassword(!showpassword);
-          }}
-        >
-          <EyeLogo />
-        </button>
+        {showPasswordToggle && (
+          <button
+            className={`showpasswordbutton-duo formbutton ${showpassword === true && '__faded'}`}
+            onClick={(e) => {
+              e.preventDefault();
+              setShowpassword(!showpassword);
+            }}
+          >
+            <EyeLogo />
+          </button>
+        )}
         <button className={`lockbutton formbutton`}>
           <LockLogo />
         </button>
@@ -116,15 +119,17 @@ const TextInput = ({
           className={error && 'input-error'}
         />
         {showpassword && <input type="text" name={name} value={input} className="passwordreveal" />}
-        <button
-          className={`showpasswordbutton formbutton ${showpassword === true && '__faded'}`}
-          onClick={(e) => {
-            e.preventDefault();
-            setShowpassword(!showpassword);
-          }}
-        >
-          <EyeLogo />
-        </button>
+        {showPasswordToggle && (
+          <button
+            className={`showpasswordbutton formbutton ${showpassword === true && '__faded'}`}
+            onClick={(e) => {
+              e.preventDefault();
+              setShowpassword(!showpassword);
+            }}
+          >
+            <EyeLogo />
+          </button>
+        )}
         {error && <span className="error-message">{error}</span>}
       </div>
     );
