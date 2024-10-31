@@ -7,3 +7,9 @@
   gap: 24px;
   margin-bottom: 40px;
 }
+
+.text-register-info {
+  /* font-size: 0.85em; */
+  color: var(--color-blue2);
+  margin-bottom: 32px;
+}

@@ -19,3 +19,22 @@ aside {
   max-width: 100% !important;
   background-color: var(--color-blue5);
 }
+
+.cohort-nav-link {
+  text-decoration: none;
+}
+
+.cohort-div {
+  margin-top: 15px;
+}
+
+.dashboard-cohort  {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(365px, 1fr));
+  max-height: 400px;
+  overflow: auto;
+}
+
+.dashboard-cohort-title {
+  margin-bottom: 0rem !important;
+}

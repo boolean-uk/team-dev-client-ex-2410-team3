@@ -2,22 +2,48 @@ import { useEffect, useState } from 'react';
 import Card from '../../components/card';
 import './style.css';
 import { getCohorts } from '../../service/apiClient';
+import useAuth from '../../hooks/useAuth';
+// eslint-disable-next-line camelcase
+import jwt_decode from 'jwt-decode';
+import { useLocation } from 'react-router-dom';
 
 const Cohort = () => {
+  const { token } = useAuth();
   const [cohort, setCohort] = useState([]);
   const [students, setStudents] = useState([]);
   const [teachers, setTeachers] = useState([]);
+  const [selectedCohort, setSelectedCohort] = useState({});
+  const location = useLocation();
+
+  const fetchCohorts = async (cohortId) => {
+    const allCohorts = await getCohorts();
+    const userCohorts = [];
+    const { userId } = jwt_decode(token);
+
+    // Filter cohorts to include only those the user belongs to
+    allCohorts.forEach((cohort) => {
+      if (cohort.users.some((user) => user.id === userId)) {
+        userCohorts.push(cohort);
+      }
+    });
+
+    setCohort(userCohorts);
+
+    // Find the cohort by ID if specified; otherwise, default to the first cohort
+    const initialCohort = userCohorts.find((cohort) => cohort.id === cohortId) || userCohorts[0];
+
+    if (initialCohort) {
+      setSelectedCohort(initialCohort);
+      setStudents(initialCohort.users.filter((user) => user.role === 'STUDENT'));
+      setTeachers(initialCohort.users.filter((user) => user.role === 'TEACHER'));
+    }
+  };
 
   useEffect(() => {
-    const fetchCohorts = async () => {
-      const cohorts = await getCohorts();
-      // Divert the teacher and students into separate arrays for easy access. Later, this would be not using cohort[0] but depending on which cohort is selected.
-      setStudents(cohorts[0].users.filter((user) => user.role === 'STUDENT'));
-      setTeachers(cohorts[0].users.filter((user) => user.role === 'TEACHER'));
-      setCohort(cohorts);
-    };
-    fetchCohorts();
-  }, []);
+    const cohortId = location.state?.cohortId;
+    console.log(cohortId);
+    fetchCohorts(cohortId);
+  }, [location.state]);
 
   if (cohort.length === 0) {
     return (
@@ -30,10 +56,14 @@ const Cohort = () => {
     );
   }
 
-  /* This is the main component for the cohort page. 
-    For future use, there will be a dropdown to select the cohort depending on the current user that is logged in.
-    As of now, the data is showing the first cohort in the database. Does not matter who is logged in.
-  */
+  const handleCohortChange = (event) => {
+    const selectedCohortId = event.target.value;
+    const selectedCohort = cohort.find((c) => c.id === parseInt(selectedCohortId));
+    setSelectedCohort(selectedCohort);
+    setStudents(selectedCohort.users.filter((user) => user.role === 'STUDENT'));
+    setTeachers(selectedCohort.users.filter((user) => user.role === 'TEACHER'));
+  };
+
   return (
     <>
       <main>
@@ -46,18 +76,30 @@ const Cohort = () => {
               <p>&lt; &gt;</p>
             </div>
             <div className="post-user-name">
-              {/* Need to only fetch the cohort from current user that is logged in. Then maybe create a drop down to see a specific cohort. */}
-              <p>
-                {cohort[0].name}, Cohort {cohort[0].id}
-              </p>
-              <small>
-                {new Date(cohort[0].startDate).toLocaleString('default', {
+              {/* This is a drop down menu so the user can change which cohort to view. */}
+              <div className="cohort-dropdown">
+                <select
+                  id="cohort-select"
+                  onChange={handleCohortChange}
+                  className="cohort-select"
+                  value={selectedCohort?.id || ''}
+                >
+                  {cohort.map((c) => (
+                    <option key={c.id} value={c.id} className="cohort-option">
+                      {c.name}, Cohort {c.id}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <small className="start-and-end-date">
+                {new Date(selectedCohort.startDate).toLocaleString('default', {
                   month: 'long',
                   year: 'numeric'
                 })}{' '}
                 -{' '}
                 {/* ADD space between the dash, ESLINT removs it, therefore I Added {' '}  and {' '} */}
-                {new Date(cohort[0].endDate).toLocaleString('default', {
+                {new Date(selectedCohort.endDate).toLocaleString('default', {
                   month: 'long',
                   year: 'numeric'
                 })}

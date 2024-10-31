@@ -22,11 +22,7 @@ async function updateProfile(
   username,
   githubUsername,
   profilePicture,
-  mobile,
-  cohortId,
-  role,
-  email,
-  password
+  mobile
 ) {
   return await patch(`users/${userId}`, {
     firstName,
@@ -35,12 +31,18 @@ async function updateProfile(
     username,
     githubUsername,
     profilePicture,
-    mobile,
-    cohortId,
-    role,
-    email,
-    password
+    mobile
   });
+}
+
+async function getUserData(userId) {
+  const res = await get(`users/${userId}`);
+  return res.data.user;
+}
+
+async function getUserData(userId) {
+  const res = await get(`users/${userId}`);
+  return res.data.user;
 }
 
 async function getPosts() {

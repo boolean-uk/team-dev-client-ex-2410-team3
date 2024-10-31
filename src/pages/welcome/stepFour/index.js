@@ -17,7 +17,7 @@ const StepFour = ({ data, setData }) => {
               placeholder="Tell us about yourself, your professional and educational highlights to date..."
               maxLength={300}
             ></textarea>
-            {`${data.bio.length} / 300`}
+            {data.bio == null ? `0 / 300` : `${data.bio.length} / 300`}
           </label>
         </div>
       </Form>

@@ -1,5 +1,12 @@
+import './textInput.css';
 import { useEffect, useState } from 'react';
 
+/**
+ * validChars: Characters that are allowed in the input, the user can't type characters that are not included in validChars
+ * -
+ * pattern: Required pattern/format for email or password.
+ * patternDescription: Requirements can be passed in via patternDescription, it will be displayed as help messages to the user if the input doesn't match the pattern
+ */
 const TextInput = ({
   value,
   onChange,
@@ -9,6 +16,9 @@ const TextInput = ({
   type = 'text',
   isRequired = false,
   validChars = 'A-Za-z0-9@_-',
+  pattern = null,
+  patternDescription = null,
+  minLength = 0,
   maxLength = 50,
   isLocked = false,
   showPasswordToggle = true
@@ -16,13 +26,18 @@ const TextInput = ({
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
   const [showpassword, setShowpassword] = useState(false);
-  const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
   useEffect(() => {
-    if (isRequired && value.length === 0) {
-      setError(`${label.slice(0, -1)} is required`);
+    if (isRequired) {
+      if (value != null) {
+        if (value.length === 0) {
+          setError(`${label.slice(0, -1)} is required`);
+        } else {
+          setError('');
+        }
+      }
     }
-  }, [isRequired]);
+  }, [isRequired, value]);
 
   const validateInput = (value, event) => {
     const regex = new RegExp(`^[${validChars}]+$`);
@@ -36,6 +51,16 @@ const TextInput = ({
       setError(
         `Input must be up to ${maxLength} characters long and contain only: ${validChars.split('').join(', ')}`
       );
+    } else if (pattern && !pattern.test(value)) {
+      if (patternDescription) {
+        setError(`${patternDescription}`);
+      } else {
+        setError(`Input must match the pattern: ${pattern}`);
+      }
+      onChange(event);
+    } else if (value.length < minLength) {
+      setError(`Input must be at least ${minLength} characters long`);
+      onChange(event);
     } else {
       setError('');
     }
@@ -117,8 +142,8 @@ const TextInput = ({
           name={name}
           value={value}
           onChange={handleChange}
-          pattern={emailPattern}
-          className={icon && 'input-has-icon'}
+          pattern={pattern}
+          className={(error && 'input-error') || (icon && 'input-has-icon')}
         />
         {icon && <span className="input-icon">{icon}</span>}
         {error && <span className="error-message">{error}</span>}

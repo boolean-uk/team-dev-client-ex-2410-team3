@@ -4,7 +4,7 @@ import Header from '../components/header';
 import Modal from '../components/modal';
 import Navigation from '../components/navigation';
 import useAuth from '../hooks/useAuth';
-import { getUserData, login, register, updateProfile } from '../service/apiClient';
+import { updateProfile, getUserData, login, register } from '../service/apiClient';
 
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode';
@@ -22,9 +22,12 @@ const AuthProvider = ({ children }) => {
     const storedToken = localStorage.getItem('token');
     const storedRole = localStorage.getItem('role');
 
-    if (storedToken && storedRole) {
+    const storedUserCredentials = JSON.parse(localStorage.getItem('userCredentials'));
+
+    if (storedToken && storedRole && storedUserCredentials) {
       setToken(storedToken);
       setRole(storedRole);
+      setUserCredentials(storedUserCredentials);
       navigate(location.pathname || '/');
     } else {
       navigate('/login');
@@ -40,6 +43,7 @@ const AuthProvider = ({ children }) => {
 
     localStorage.setItem('token', res.data.token);
     localStorage.setItem('role', res.data.user.role);
+    localStorage.setItem('userCredentials', JSON.stringify({ email, password }));
 
     setToken(res.data.token);
     setRole(res.data.user.role);
@@ -50,6 +54,7 @@ const AuthProvider = ({ children }) => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    localStorage.removeItem('userCredentials');
     setToken(null);
     setRole(null);
     setUserCredentials({ email: '', password: '' });
@@ -67,6 +72,7 @@ const AuthProvider = ({ children }) => {
 
     localStorage.setItem('token', res.data.token);
     localStorage.setItem('role', res.data.user.role);
+    localStorage.setItem('userCredentials', JSON.stringify({ email, password }));
 
     setToken(res.data.token);
     setRole(res.data.user.role);
@@ -76,7 +82,6 @@ const AuthProvider = ({ children }) => {
   };
 
   const handleUpdateProfile = async (
-    id,
     firstName,
     lastName,
     bio,
@@ -84,30 +89,32 @@ const AuthProvider = ({ children }) => {
     githubUsername,
     profilePicture,
     mobile,
-    cohortId,
-    role,
-    email,
-    password
+    id
   ) => {
     if (id == null) {
       const { userId } = jwt_decode(token);
-      id = userId;
+      await updateProfile(
+        userId,
+        firstName,
+        lastName,
+        bio,
+        username,
+        githubUsername,
+        profilePicture,
+        mobile
+      );
+    } else {
+      await updateProfile(
+        id,
+        firstName,
+        lastName,
+        bio,
+        username,
+        githubUsername,
+        profilePicture,
+        mobile
+      );
     }
-
-    await updateProfile(
-      id,
-      firstName,
-      lastName,
-      bio,
-      username,
-      githubUsername,
-      profilePicture,
-      mobile,
-      cohortId,
-      role,
-      email,
-      password
-    );
 
     localStorage.setItem('token', token);
     localStorage.setItem('role', role);

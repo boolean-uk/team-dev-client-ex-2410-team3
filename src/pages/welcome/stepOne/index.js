@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProfileIcon from '../../../assets/icons/profileIcon';
 import Form from '../../../components/form';
 import TextInput from '../../../components/form/textInput';
@@ -20,6 +20,12 @@ const StepOne = ({ data, setData, errors }) => {
       reader.readAsDataURL(file);
     }
   };
+
+  useEffect(() => {
+    if (data.profilePicture != null) {
+      setUploadedImageHex(data.profilePicture);
+    }
+  }, [data.profilePicture]);
 
   const handleUploadPressed = () => {
     setIsPopupVisible(true);
