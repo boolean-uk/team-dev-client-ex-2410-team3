@@ -30,15 +30,18 @@ const ContactInfoForm = () => {
             validChars="0-9()+-"
             isRequired={true}
           />
-          <TextInput
-            name="password"
-            label="Password*"
-            value={profile.password}
-            onChange={handleInputChange}
-            type="password"
-            isRequired={true}
-            validChars="A-Za-z0-9 -"
-          />
+          <div className={`profile-grid-section read-only`}>
+            <TextInput
+              name="password"
+              label="Password*"
+              value={profile.password}
+              onChange={handleInputChange}
+              type="password"
+              isRequired={true}
+              validChars="A-Za-z0-9 -"
+              showPasswordToggle={false}
+            />
+          </div>
         </div>
       </Form>
     </div>
