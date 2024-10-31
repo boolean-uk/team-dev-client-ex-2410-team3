@@ -2,6 +2,9 @@
   height: 56px;
   border-bottom: 1px solid #dce1f0;
   margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .cohort-div {
