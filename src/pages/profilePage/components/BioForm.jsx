@@ -5,7 +5,8 @@ import { ProfileContext } from '..';
 const BioForm = () => {
   const { profile, handleBioChange, isEditMode } = useContext(ProfileContext);
   const maxLength = 300;
-  const isMaxLengthReached = profile.bio.length >= maxLength;
+  const biography = profile.biography || ''; // Använd en tom sträng som standardvärde
+  const isMaxLengthReached = biography.length >= maxLength;
 
   return (
     <div className="profile-grid-section-bio">
@@ -17,14 +18,14 @@ const BioForm = () => {
           <div className={`profile-grid-section ${isEditMode ? '' : 'read-only'}`}>
             <textarea
               onChange={handleBioChange}
-              name="bio"
-              value={profile.bio}
+              name="biography"
+              value={biography}
               placeholder="Tell us about yourself, your professional interests and educational highlights to date..."
               maxLength={300}
               id="bio"
             ></textarea>
             <div className="info-container">
-              <p className="info-text">{profile.bio.length}/300</p>
+              <p className="info-text">{biography.length}/300</p>
               {isMaxLengthReached && <p className="error-text">Max length is 300 characters</p>}
             </div>
           </div>

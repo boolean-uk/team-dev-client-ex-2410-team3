@@ -36,9 +36,9 @@ const TrainingInfoForm = () => {
             validChars="A-Za-z0-9 -"
           />
           <TextInput
-            name="cohortId"
+            name="cohort_id"
             label="Cohort*"
-            value={profile.cohortId}
+            value={profile.cohort_id}
             onChange={handleInputChange}
             type="text"
             isLocked={isEditMode && !isCurrentUserTeacher}
