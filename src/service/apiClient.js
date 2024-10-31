@@ -40,6 +40,11 @@ async function getUserData(userId) {
   return res.data.user;
 }
 
+async function getUsers() {
+  const res = await get(`users`);
+  return res.data.users;
+}
+
 async function getPosts() {
   const res = await get('posts');
   return res.data.posts;
@@ -84,4 +89,4 @@ async function request(method, endpoint, data, auth = true) {
   return response.json();
 }
 
-export { login, getPosts, register, updateProfile, getCohorts, getUserData };
+export { login, getPosts, register, updateProfile, getCohorts, getUserData, getUsers };

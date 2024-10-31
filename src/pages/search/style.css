@@ -1,0 +1,10 @@
+.search-results-header-container {
+  display: flex;
+  align-items: center;
+}
+.search-results-page {
+    margin : 20;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
