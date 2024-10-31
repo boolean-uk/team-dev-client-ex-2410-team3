@@ -4,7 +4,7 @@ import Header from '../components/header';
 import Modal from '../components/modal';
 import Navigation from '../components/navigation';
 import useAuth from '../hooks/useAuth';
-import { updateProfile, getUserData, login, register } from '../service/apiClient';
+import { updateProfile, getUserData, login, register, postMessage } from '../service/apiClient';
 
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode';
@@ -118,7 +118,7 @@ const AuthProvider = ({ children }) => {
 
     localStorage.setItem('token', token);
     localStorage.setItem('role', role);
-    navigate('/');
+    //navigate('/');
   };
 
   const handleGetUserById = async (id) => {
@@ -131,6 +131,11 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const handlePostMessage = async (message) => {
+    const { userId } = jwt_decode(token);
+    await postMessage(userId, message);
+  };
+
   const value = {
     token,
     userCredentials,
@@ -139,7 +144,8 @@ const AuthProvider = ({ children }) => {
     onLogout: handleLogout,
     onRegister: handleRegister,
     onUpdateProfile: handleUpdateProfile,
-    onGetUser: handleGetUserById
+    onGetUser: handleGetUserById,
+    onPostMessage: handlePostMessage
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

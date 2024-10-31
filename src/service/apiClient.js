@@ -14,6 +14,10 @@ async function register(email, password) {
   return await login(email, password);
 }
 
+async function postMessage(userId, message) {
+  await post(`posts`, { message });
+}
+
 async function updateProfile(
   userId,
   firstName,
@@ -81,7 +85,7 @@ async function request(method, endpoint, data, auth = true) {
 
   if (auth) {
     // eslint-disable-next-line dot-notation
-    opts.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+    opts.headers['authorization'] = `Bearer ${localStorage.getItem('token')}`;
   }
 
   const response = await fetch(`${API_URL}/${endpoint}`, opts);
@@ -89,4 +93,4 @@ async function request(method, endpoint, data, auth = true) {
   return response.json();
 }
 
-export { login, getPosts, register, updateProfile, getCohorts, getUserData, getUsers };
+export { login, getPosts, register, updateProfile, getCohorts, getUserData, getUsers, postMessage };
