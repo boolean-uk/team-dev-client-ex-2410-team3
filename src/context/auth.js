@@ -4,7 +4,7 @@ import Header from '../components/header';
 import Modal from '../components/modal';
 import Navigation from '../components/navigation';
 import useAuth from '../hooks/useAuth';
-import { createProfile, login, register } from '../service/apiClient';
+import { getUserData, login, register, updateProfile } from '../service/apiClient';
 
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode';
@@ -75,21 +75,53 @@ const AuthProvider = ({ children }) => {
     navigate('/verification');
   };
 
-  const handleCreateProfile = async (
+  const handleUpdateProfile = async (
+    id,
     firstName,
     lastName,
-    username,
-    githubUrl,
     bio,
-    profilePicture
+    username,
+    githubUsername,
+    profilePicture,
+    mobile,
+    cohortId,
+    role,
+    email,
+    password
   ) => {
-    const { userId } = jwt_decode(token);
+    if (id == null) {
+      const { userId } = jwt_decode(token);
+      id = userId;
+    }
 
-    await createProfile(userId, firstName, lastName, username, githubUrl, bio, profilePicture);
+    await updateProfile(
+      id,
+      firstName,
+      lastName,
+      bio,
+      username,
+      githubUsername,
+      profilePicture,
+      mobile,
+      cohortId,
+      role,
+      email,
+      password
+    );
 
     localStorage.setItem('token', token);
     localStorage.setItem('role', role);
     navigate('/');
+  };
+
+  const handleGetUserById = async (id) => {
+    if (id == null) {
+      const { userId } = jwt_decode(token);
+
+      return await getUserData(userId);
+    } else {
+      return await getUserData(id);
+    }
   };
 
   const value = {
@@ -99,7 +131,8 @@ const AuthProvider = ({ children }) => {
     onLogin: handleLogin,
     onLogout: handleLogout,
     onRegister: handleRegister,
-    onCreateProfile: handleCreateProfile
+    onUpdateProfile: handleUpdateProfile,
+    onGetUser: handleGetUserById
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
