@@ -64,6 +64,8 @@ const Cohort = () => {
           selectedCohort={selectedCohort}
           students={students}
           teachers={teachers}
+          currentUserId={userId}
+          fetchCohorts={fetchCohorts}
         />
       ) : (
         <StudentView
