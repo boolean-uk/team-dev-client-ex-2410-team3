@@ -14,8 +14,8 @@ async function register(email, password) {
   return await login(email, password);
 }
 
-async function postMessage(userId, message) {
-  await post(`posts`, { message });
+async function postMessage(content) {
+  await post(`posts`, { content });
 }
 
 async function updateProfile(

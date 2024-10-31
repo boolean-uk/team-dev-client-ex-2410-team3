@@ -3,15 +3,16 @@ import useModal from '../../hooks/useModal';
 import './style.css';
 import Button from '../button';
 import useAuth from '../../hooks/useAuth';
+import { postMessage } from '../../service/apiClient';
+import { useNavigate } from 'react-router-dom';
 
 const CreatePostModal = () => {
   // Use the useModal hook to get the closeModal function so we can close the modal on user interaction
   const { closeModal } = useModal();
+  const navigate = useNavigate();
 
   const [message, setMessage] = useState(null);
   const [text, setText] = useState('');
-
-  const { onPostMessage } = useAuth();
 
   const onChange = (e) => {
     setText(e.target.value);
@@ -20,11 +21,12 @@ const CreatePostModal = () => {
   const onSubmit = () => {
     setMessage('Submit button was clicked! Closing modal in 2 seconds...');
 
-    onPostMessage(text);
+    postMessage(text);
 
     setTimeout(() => {
       setMessage(null);
       closeModal();
+      navigate(0);
     }, 2000);
   };
 
