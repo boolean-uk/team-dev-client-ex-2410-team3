@@ -1,0 +1,61 @@
+.search-results {
+    padding: 0.5rem;
+    background-color: #ffffff;
+    border-radius: 5px;
+    /* Remove max-height to prevent auto-scroll for under 10 users */
+    max-height: 100%;
+    overflow-y: auto;
+  }
+  
+  .search-user {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .search-user:hover {
+    background-color: #ffffff;
+  }
+  
+  .search-user p {
+    margin: 0;
+  }
+  
+  .profile-circle-container {
+    margin-right: 0.5rem; /* Space between profile and text */
+  }
+  
+  .user-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-results-line {
+    border: none;
+    border-top: 2px solid rgb(210, 210, 210); 
+    margin: 0.5rem 0; 
+    opacity: 0.8; 
+  }  
+  
+  .show-all-button,
+  .edit-search-button {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: #d7dce3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .show-all-button:hover,
+  .edit-search-button:hover {
+    background-color: #666;
+  }
+  
+  .no-results-message {
+    margin-bottom: 0.5rem;
+  }
+  

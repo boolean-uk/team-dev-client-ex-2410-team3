@@ -40,6 +40,11 @@ async function getUserData(userId) {
   return res.data.user;
 }
 
+async function getUsers() {
+  const res = await get(`users`);
+  return res.data.users;
+}
+
 async function getPosts() {
   const res = await get('posts');
   return res.data.posts;
