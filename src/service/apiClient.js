@@ -106,5 +106,6 @@ export {
   getCohorts,
   postCohort,
   addUserToCohort,
-  getUserData
+  getUserData,
+  getUsers
 };
