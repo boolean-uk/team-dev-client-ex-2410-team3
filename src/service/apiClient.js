@@ -94,7 +94,7 @@ async function request(method, endpoint, data, auth = true) {
 
   if (auth) {
     // eslint-disable-next-line dot-notation
-    opts.headers['authorization'] = `Bearer ${localStorage.getItem('token')}`;
+    opts.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
   }
 
   const response = await fetch(`${API_URL}/${endpoint}`, opts);
